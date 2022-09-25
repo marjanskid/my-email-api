@@ -9,7 +9,7 @@ public class Account {
 
     @Getter
     @Setter
-    private String id;
+    private Long id;
 
     @Getter
     @Setter

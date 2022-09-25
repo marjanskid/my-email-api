@@ -10,10 +10,15 @@ import java.security.KeyFactory;
 import java.security.PrivateKey;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.Base64;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
 public class TokenUtils {
+
+    public static String generateToken(String username, Long duration, String issuer) throws Exception {
+        return generateToken(username, Collections.singleton(UserRole.AUTHENTICATED_USER), duration, issuer);
+    }
 
     public static String generateToken(String username, Set<UserRole> roles, Long duration, String issuer) throws Exception {
         String privateKeyLocation = "/privatekey.pem";

@@ -8,7 +8,6 @@ import org.jboss.logging.Logger;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.InternalServerErrorException;
-import javax.ws.rs.NotFoundException;
 import java.util.Optional;
 
 @ApplicationScoped
@@ -22,16 +21,17 @@ public class SQLAccountRepository implements AccountRepository {
     @Override
     public Account findByUsername(final String username) {
         final Optional<AccountEntity> potentialAccountEntity = accountRepository.findByUsername(username);
-        final AccountEntity foundAccountEntity = potentialAccountEntity.orElseThrow(() -> {
-            throw new NotFoundException("Account with username: " + username + " not found");
-        });
+        if (potentialAccountEntity.isEmpty()) {
+            return null;
+        }
 
+        AccountEntity accountEntity = potentialAccountEntity.get();
         try {
-            return foundAccountEntity.toDomain();
+            return accountEntity.toDomain();
         } catch (final Exception e) {
-            log.error("Error occurred during AccountEntity: " + foundAccountEntity + "to domain mapping");
+            log.error("Error occurred during AccountEntity: " + accountEntity + "to domain mapping");
 
-            throw new InternalServerErrorException("Error occurred during AccountEntity: " + foundAccountEntity + "to domain mapping", e);
+            throw new InternalServerErrorException("Error occurred during AccountEntity: " + accountEntity + "to domain mapping", e);
         }
     }
 }

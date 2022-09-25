@@ -20,9 +20,9 @@ import javax.ws.rs.core.Response;
 import java.util.Collections;
 
 @Path("/secured")
-public class AuthResource {
+public class AuthController {
 
-    private static final Logger log = Logger.getLogger(AuthResource.class);
+    private static final Logger log = Logger.getLogger(AuthController.class);
 
     @ConfigProperty(name = "mp.jwt.verify.issuer")
     String issuer;
@@ -42,11 +42,12 @@ public class AuthResource {
         Account account = authService.getByUsername(authRequest.getEmail());
         if (account != null && account.getPassword().equals(passwordEncoder.encode(authRequest.getPassword()))) {
             try {
-                log.info("Account: " + account + "found for given username and password combination");
+                log.info("Account '" + account.getUsername() + "' found for given username and password combination");
 
-                return Response.ok(new AuthResponse(TokenUtils.generateToken(account.getUsername(), Collections.singleton(UserRole.AUTHENTICATED_USER) , duration, issuer))).build();
+                return Response.ok(new AuthResponse(TokenUtils.generateToken(account.getUsername(), duration, issuer))).build();
             } catch (Exception e) {
-                log.info("Account: " + account + "found for given username and password combination but token generator failed", e);
+                String message = "Account '" + account.getUsername() + "' found for given username and password combination but token generator failed";
+                log.info(message, e);
 
                 return Response.status(Response.Status.UNAUTHORIZED).build();
             }

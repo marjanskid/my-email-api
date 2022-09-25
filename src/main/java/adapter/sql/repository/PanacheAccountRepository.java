@@ -13,8 +13,4 @@ public class PanacheAccountRepository implements PanacheRepository<AccountEntity
         return find("username", username).stream()
                 .findFirst();
     }
-
-//    public Optional<AccountEntity> findByUsername(String username) {
-//        return findAll().stream().findFirst();
-//    }
 }
