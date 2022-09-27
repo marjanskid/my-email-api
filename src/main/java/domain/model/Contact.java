@@ -2,7 +2,7 @@ package domain.model;
 
 import java.util.List;
 
-class Contact {
+public class Contact {
 
     private String id;
     private String first;
