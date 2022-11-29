@@ -5,9 +5,9 @@ import adapter.http.response.AuthResponse;
 import adapter.util.auth.PBKDF2Encoder;
 import adapter.util.auth.TokenUtils;
 import domain.model.Account;
-import domain.model.UserRole;
 import domain.service.AuthService;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
+import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.jboss.logging.Logger;
 
 import javax.annotation.security.PermitAll;
@@ -17,7 +17,6 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.Collections;
 
 @Path("/secured")
 public class AuthController {
